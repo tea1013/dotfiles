@@ -1,5 +1,4 @@
 NEOVIM_BASE := ~/.config/nvim
-MSG :=
 
 confirm:
 	@read -p "Are you sure you want to proceed? [Y/n]: " yn; \
@@ -8,11 +7,12 @@ confirm:
 		exit 1; \
 	fi
 
-setup/nvim: confirm
+setup: confirm
 	mkdir -p $(NEOVIM_BASE)
 	rm -rf $(NEOVIM_BASE)/*
-	cp -r ./nvim/* $(NEOVIM_BASE)
+	cp -r init.lua lua $(NEOVIM_BASE)
 
-sync/nvim:
-	rm -rf ./nvim/*
-	cp -r $(NEOVIM_BASE)/* ./nvim
+sync:
+	rm -rf init.lua lua plugin
+	cp -r $(NEOVIM_BASE)/* .
+
