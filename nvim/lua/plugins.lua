@@ -1,103 +1,150 @@
-return {
-  {
-    'sainnhe/everforest',
+vim.cmd [[packadd packer.nvim]]
+
+return require('packer').startup(function()
+  use {
+    'rmehri01/onenord.nvim',
     config = function()
-      vim.cmd[[colorscheme everforest]]
+      require("config/onenord")
     end
-  },
-  {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons"
-    },
+  }
+
+  use {
+    'nvim-tree/nvim-tree.lua',
+    requires = {'nvim-tree/nvim-web-devicons'},
     config = function()
       require("config/nvim-tree")
     end
-  },
-  {
-    "neovim/nvim-lspconfig",
+  }
+
+  use {
+    'neovim/nvim-lspconfig',
     config = function()
       require("config/nvim-lspconfig")
     end
-  },
-  {
+  }
+
+  use {
     "williamboman/mason.nvim",
     config = function()
-    end
-  },
-  {
+      require("config/mason")
+    end,
+    requires = {
+      'williamboman/mason-lspconfig.nvim',
+      'neovim/nvim-lspconfig',
+      'hrsh7th/cmp-nvim-lsp'
+    }
+  }
+
+  use {
     "williamboman/mason-lspconfig.nvim",
     config = function()
     end
-  },
-  {
-    "onsails/lspkind.nvim",
+  }
+
+  use {
+    'onsails/lspkind.nvim',
     config = function ()
     end
-  },
-  {
-    "hrsh7th/nvim-cmp",
+  }
+
+  use {
+    'hrsh7th/nvim-cmp',
     config = function()
       require("config/nvim-cmp")
-    end
-  },
-  {
-    "hrsh7th/cmp-buffer",
+    end,
+    requires = {
+      'hrsh7th/cmp-nvim-lsp',
+      {
+        "L3MON4D3/LuaSnip",
+        tag = "v2.*",
+        requires = 'saadparwaiz1/cmp_luasnip',
+        config = function ()
+          require("config/luasnip")
+        end
+      }
+    }
+  }
+
+  use {
+    'hrsh7th/cmp-buffer',
     config = function()
     end
-  },
-  {
-    "hrsh7th/cmp-path",
+  }
+
+  use {
+    'hrsh7th/cmp-path',
     config = function()
       require("config/cmp-path")
     end
-  },
-  {
-    "hrsh7th/cmp-cmdline",
+  }
+
+  use {
+    'hrsh7th/cmp-cmdline',
     config = function()
     end
-  },
-  {
-    "hrsh7th/cmp-nvim-lsp",
+  }
+
+  use {
+    'hrsh7th/cmp-nvim-lsp',
     config = function()
     end
-  },
-  {
-    "hrsh7th/vim-vsnip",
-    config = function()
-    end
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim"
-    },
-    config = function ()
-      require("config/null-ls")
-    end
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
+  }
+
+  use {
+    'nvim-treesitter/nvim-treesitter',
     config = function ()
       require("config/nvim-treesitter")
     end
-  },
-  {
+  }
+
+  use {
     'windwp/nvim-autopairs',
     event = "InsertEnter",
-    opts = {}
-  },
-  {
+    config = function()
+      require("config/nvim-autopairs")
+    end
+  }
+
+  use {
     'lewis6991/gitsigns.nvim',
     config = function()
       require("config/gitsigns")
     end
-  },
-  {
+  }
+
+  use {
     'nvim-lualine/lualine.nvim',
     config = function()
       require("config/lualine")
+    end,
+    requires = {
+      'neovim/nvim-lspconfig',
+      'lewis6991/gitsigns.nvim',
+      'SmiteshP/nvim-navic',
+    }
+  }
+
+  use {
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.2',
+    requires = {'nvim-lua/plenary.nvim'},
+    config = function()
+      require("config/telescope")
     end
   }
-}
 
+  use {
+    'mfussenegger/nvim-lint',
+    config = function()
+      require("config/nvim-lint")
+    end
+  }
+
+  use {
+    'SmiteshP/nvim-navic',
+    config = function()
+      require('config/nvim-navic')
+    end,
+    requires = 'neovim/nvim-lspconfig'
+  }
+end)

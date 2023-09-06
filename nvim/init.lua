@@ -1,4 +1,3 @@
-require("lazy_nvim")
 require("plugins")
 require("base")
 require("keymaps")
@@ -19,4 +18,3 @@ if vim.fn.has("wsl") == 1 then
     cache_enabled = 0,
   }
 end
-

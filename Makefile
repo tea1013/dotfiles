@@ -12,4 +12,5 @@ setup/nvim: confirm
 	cp -r ./nvim/* $(NEOVIM_BASE)
 
 sync/nvim:
+	rm -rf ./nvim/*
 	cp -r $(NEOVIM_BASE)/* ./nvim

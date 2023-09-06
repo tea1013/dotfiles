@@ -8,10 +8,10 @@ treesitter.setup {
     additional_vim_regex_highlighting = false,
     disable = {},
   },
-　indent = {
-　　enable = true,
-  　disable ={"html"},-- htmlのインデントだけ無効化
-　},
+  indent = {
+    enable = true,
+    disable ={"html"},
+  },
   autotag = {
     enable = true,
   },

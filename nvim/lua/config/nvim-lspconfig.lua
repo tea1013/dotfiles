@@ -1,32 +1,16 @@
-require('mason').setup()
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-require('mason-lspconfig').setup_handlers {
-  function(server)
-    require('lspconfig')[server].setup {
-      on_attach = on_attach,
-      capabilities = require('cmp_nvim_lsp').default_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-      )
-    }
-    require("lspconfig").pyright.setup {
-      settings = {
-        python = {
-          venvPath = ".",
-          pythonPath = "./.venv/bin/python",
-          analysis = {
-            extraPaths = { "." }
-          }
-        }
-      }
-    }
-  end
-}
+    vim.api.nvim_set_keymap('n', 'gd', [[<cmd>lua vim.lsp.buf.definition()<cr>]], { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', 'gf', [[<cmd>lua vim.lsp.buf.format()<cr>]], { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', 'gh', [[<cmd>lua vim.lsp.buf.hover()<cr>]], { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', 'g/', [[<cmd>lua vim.lsp.buf.references()<cr>]], { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', 'gr', [[<cmd>lua vim.lsp.buf.rename()<cr>]], { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', 'ga', [[<cmd>lua vim.lsp.buf.code_action()<cr>]], { noremap = true, silent = true })
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  update_in_insert = false,
-  virtual_text = {
-    format = function(diagnostic)
-      return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
-    end,
-  },
+    local opts = { buffer = ev.buf }
+  end,
 })
+

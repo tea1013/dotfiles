@@ -7,7 +7,7 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.signcolumn = "number"
 vim.bo.softtabstop = 2
-
+vim.o.updatetime = 300
 
 -- auto add final new line --
 -- vim.cmd [[

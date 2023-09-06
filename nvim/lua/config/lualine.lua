@@ -1,50 +1,70 @@
-local function get_lsp_client_names()
-  local client_names = {}
+local colors = require('onenord.colors').load()
 
-  for _, client in pairs(vim.lsp.get_active_clients()) do
-    table.insert(client_names, client.name)
+local function diff_source()
+  local gitsigns = vim.b.gitsigns_status_dict
+  if gitsigns then
+    return {
+      added = gitsigns.added,
+      modified = gitsigns.changed,
+      removed = gitsigns.removed
+    }
   end
-
-  return table.concat(client_names, ", ")
 end
 
 require('lualine').setup {
   options = {
-    icons_enabled = true,
-    theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    disabled_filetypes = {
-      statusline = {},
-      winbar = {},
-    },
-    ignore_focus = {},
-    always_divide_middle = true,
-    globalstatus = false,
-    refresh = {
-      statusline = 1000,
-      tabline = 1000,
-      winbar = 1000,
-    }
+    section_separators = { left = '', right = '' },
+    component_separators = { left = '', right = '' },
   },
   sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'filetype'},
-    lualine_y = {get_lsp_client_names},
-    lualine_z = {'location'}
+    lualine_a = {
+      'mode',
+    },
+    lualine_b = {
+      {
+        'filename',
+        newfile_status = true,
+        path = 1,
+        shorting_target = 24,
+        symbols = { modified = '_󰷥', readonly = ' ', newfile = '󰄛' },
+      },
+    },
+    lualine_c = {
+      { 'navic' }
+    },
+    lualine_x = {
+      'encoding'
+    },
+    lualine_y = {
+      { 'filetype', color = { fg = colors.fg } },
+    },
+
+    lualine_z = {
+    },
   },
-  inactive_sections = {
-    lualine_a = {},
+  tabline = {
+    lualine_a = {
+      {
+        'buffers',
+        symbols = { modified = '_󰷥', alternate_file = ' ', directory = ' ' },
+      },
+    },
     lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  winbar = {},
-  inactive_winbar = {},
-  extensions = {}
+    lualine_c = {},
+    lualine_x = {
+      {
+        'diff',
+        symbols = { added = ' ', modified = ' ', removed = ' ' },
+        source = diff_source
+      }
+    },
+    lualine_y = {
+      'branch'
+    },
+    lualine_z = {
+      { 'tabs' },
+    },
+  }
 }
+
+vim.api.nvim_set_option("showmode", false)
