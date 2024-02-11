@@ -1,0 +1,24 @@
+[
+    {
+        "command": "vscode-neovim.compositeEscape1",
+        "key": "j",
+        "when": "neovim.mode == insert && editorTextFocus",
+        "args": "j"
+    },
+    {
+        "command": "workbench.action.files.save",
+        "key": "space w",
+        "when": "neovim.mode == normal && editorTextFocus"
+    },    
+    {
+        "key": "gd",
+        "command": "editor.action.goToDeclaration",
+        "when": "neovim.mode == normal && editorTextFocus"
+    },
+    {
+        "key": "gh",
+        "command": "editor.action.showHover",
+        "when": "neovim.mode == normal && editorTextFocus"
+    }
+]
+
