@@ -1,0 +1,131 @@
+#### zsh の設定 #####
+ 
+# zsh-completions の設定。コマンド補完機能
+autoload -U compinit && compinit -u
+ 
+# git のカラー表示
+git config --global color.ui auto 
+ 
+# エイリアス
+alias his='history'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias e="nvim"
+alias mss='mysql.server start'
+alias so='source'
+alias be='bundle exec'
+alias ber='bundle exec ruby'
+
+# alias ls
+export LSCOLORS=Gxfxcxdxbxegedabagacad
+alias ls="ls -G"
+alias ll="ls -lG"
+alias la="ls -laG"
+
+# 色を使用出来るようにする
+autoload -Uz colors
+colors
+ 
+# 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+ 
+# ビープ音の停止
+setopt no_beep
+ 
+# ビープ音の停止(補完時)
+setopt nolistbeep
+ 
+# cd [TAB] で以前移動したディレクトリを表示
+setopt auto_pushd
+ 
+# ヒストリ (履歴) を保存、数を増やす
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+ 
+# 同時に起動した zsh の間でヒストリを共有する
+setopt share_history
+ 
+# 直前と同じコマンドの場合はヒストリに追加しない
+setopt hist_ignore_dups
+ 
+# 同じコマンドをヒストリに残さない
+setopt hist_ignore_all_dups
+ 
+# スペースから始まるコマンド行はヒストリに残さない
+setopt hist_ignore_space
+ 
+# ヒストリに保存するときに余分なスペースを削除する
+setopt hist_reduce_blanks
+ 
+# キーバインディングを emacs 風にする
+bindkey -d
+bindkey -e
+ 
+# 補完で小文字でも大文字にマッチさせる
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+ 
+# [TAB] でパス名の補完候補を表示したあと、
+# 続けて [TAB] を押すと候補からパス名を選択できるようになる
+# 候補を選ぶには [TAB] か Ctrl-N,B,F,P
+zstyle ':completion:*:default' menu select=1
+ 
+# コマンドのスペルを訂正する
+setopt correct
+ 
+# cd した先のディレクトリをディレクトリスタックに追加する
+# cd [TAB] でディレクトリのヒストリが表示されるので、選択して移動できる
+# ※ ディレクトリスタック: 今までに行ったディレクトリのヒストリのこと
+setopt auto_pushd
+ 
+# pushd したとき、ディレクトリがすでにスタックに含まれていればスタックに追加しない
+setopt pushd_ignore_dups
+ 
+# 拡張 glob を有効にする
+# 拡張 glob を有効にすると # ~ ^ もパターンとして扱われる
+# glob: パス名にマッチするワイルドカードパターンのこと
+# ※ たとえば mv hoge.* ~/dir というコマンドにおける * のこと
+setopt extended_glob
+ 
+# 単語の一部として扱われる文字のセットを指定する
+# ここではデフォルトのセットから / を抜いたものにしている
+# ※ たとえば Ctrl-W でカーソル前の1単語を削除したとき / までで削除が止まる
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk
+
+zinit ice pick"async.zsh" src"pure.zsh"
+zinit light sindresorhus/pure
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-completions
+zinit light mollifier/anyframe
+
+# peco
+
+bindkey '^r' anyframe-widget-execute-history
+
+# go
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+
+export GOPATH=$(go env GOPATH)
+export PATH=$PATH:$GOPATH:bin
+
+# python
+eval "$(pyenv init --path)"
+export PATH="$HOME/.local/bin:$PATH"
+
